@@ -1,20 +1,8 @@
 import { createClient } from '@supabase/supabase-js'
 
-// Función para obtener variables de entorno
-function getEnvVar(key: string): string | undefined {
-  if (typeof window !== 'undefined') {
-    // En el cliente - usar VITE_ para desarrollo
-    return import.meta.env[key]
-  } else {
-    // En el servidor - usar variables directas para producción
-    return process.env[key]
-  }
-}
-
-// En desarrollo: usar VITE_SUPABASE_URL
-// En producción: usar SUPABASE_URL
-const supabaseUrl = getEnvVar('VITE_SUPABASE_URL') || getEnvVar('SUPABASE_URL')
-const supabaseAnonKey = getEnvVar('VITE_SUPABASE_ANON_KEY') || getEnvVar('SUPABASE_ANON_KEY')
+// Usar solo variables VITE_ que funcionan en cliente y servidor
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY
 
 if (!supabaseUrl || !supabaseAnonKey) {
   throw new Error('Missing Supabase environment variables')
